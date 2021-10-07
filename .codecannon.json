@@ -1,0 +1,35 @@
+{
+    "ammo": [
+      {
+        "id": "componentStyle",
+        "extension": "module.css",
+        "body": [""]
+      },
+      {
+        "id": "componentReact",
+        "extension": "js",
+        "body": [
+          "import React from 'react';\n",
+          "import $ from './${FILENAME}.module.css';\n\n",
+          "const ${COMPONENT_NAME} = (",
+          ") => {",
+          "return <>${COMPONENT_NAME}</>;",
+          "};\n",
+          "export default ${COMPONENT_NAME};\n"
+        ]
+      }
+    ],
+    "cannons": [
+      {
+        "ammo": ["componentStyle", "componentReact"],
+        "description": "Creates a styled component",
+        "id": "createComponent",
+        "name": "Create Component",
+        "target": "src/ui/components"
+      }
+    ],
+    "options": {
+      "fileNameConvention": "PascalCase"
+    }
+  }
+  

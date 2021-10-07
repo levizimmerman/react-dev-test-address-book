@@ -1,0 +1,20 @@
+.radio {
+  align-items: center;
+  border-radius: var(--border-radius-default);
+  border: 1px solid var(--color-brand);
+  cursor: pointer;
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+  max-width: var(--width-input);
+  padding: 1em;
+  width: 100%;
+}
+
+.radio:hover {
+  background: var(--color-accent);
+}
+
+.radio input[type="radio"] {
+  margin: 0;
+}

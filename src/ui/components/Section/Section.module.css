@@ -1,0 +1,16 @@
+.section {
+  background-color: var(--color-background);
+  border-radius: var(--border-radius-xl);
+  box-shadow: 0 15px 15px rgba(0, 0, 0, 0.15);
+  color: var(--color-text);
+  margin: 3rem auto;
+  max-width: var(--width-content);
+  padding: 2rem 3rem;
+  width: 100%;
+}
+
+.dark {
+  --color-background: #141925;
+  --color-text: #fff;
+  --color-text-light: #878b9a;
+}

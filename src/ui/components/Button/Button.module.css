@@ -1,0 +1,32 @@
+.button {
+  border-radius: var(--border-radius-default);
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  color: white;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: bold;
+  max-width: var(--width-input);
+  padding: 0.5em 1em;
+  margin: 0.5em 0;
+  transition: transform 0.1s ease;
+  width: 100%;
+}
+
+.button:hover {
+  transform: scale(1.05);
+}
+
+.button:active {
+  transform: scale(0.95);
+}
+
+.primary {
+  background: var(--color-brand);
+  border: 1px solid var(--color-brand);
+}
+
+.secondary {
+  background: var(--color-background);
+  border: 1px solid var(--color-brand);
+  color: var(--color-brand);
+}

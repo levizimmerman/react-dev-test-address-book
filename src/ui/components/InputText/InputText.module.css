@@ -1,0 +1,9 @@
+.inputText {
+  background: var(--color-background);
+  border-radius: var(--border-radius-default);
+  border: 1px solid var(--color-border);
+  font-size: inherit;
+  max-width: var(--width-input);
+  padding: 0.5em;
+  width: 100%;
+}
