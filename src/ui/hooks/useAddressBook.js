@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useStore } from "react-redux";
-import transformAddress from "../../core/models/address";
 
+import transformAddress from "../../core/models/address";
 import databaseService from "../../core/services/databaseService";
 
 export default function useAddressBook() {
