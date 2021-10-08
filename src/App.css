@@ -1,7 +1,11 @@
 /**
 * New stuff
 */
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
+/* TODO: Add the 'Roboto' font from Google fonts and add it as a global CSS var called `--font-primary` */
+/* TODO: Make application responsive. It is already for the most part, but it is not optimal for smaller screens.
+* - Making the application responsive using the Mobile First principle.
+*/
 
 :root {
   --border-radius-default: 4px;
@@ -12,7 +16,6 @@
   --color-brand: #413ef7;
   --color-text: #141925;
   --color-text-light: #72787d;
-  --font-primary: "Roboto";
   --width-input: 20rem;
   --width-content: 30rem;
 }

@@ -20,13 +20,6 @@
   transform: scale(0.95);
 }
 
-.primary {
-  background: var(--color-brand);
-  border: 1px solid var(--color-brand);
-}
-
-.secondary {
-  background: var(--color-background);
-  border: 1px solid var(--color-brand);
-  color: var(--color-brand);
-}
+/** TODO: Create separate styles for .primary and .secondary variants of this button:
+* - Must use the CSS variables declared in App.css
+*/
