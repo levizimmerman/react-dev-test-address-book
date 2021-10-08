@@ -1,6 +1,6 @@
 # React Dev Test Assignment ⚛️
 
-<video src="desired-outcome.mp4" autoplay loop width="800" />
+https://user-images.githubusercontent.com/12231393/136546219-a49c6ea7-fd63-48b5-8906-04ce8c04a181.mp4
 
 ## Description
 Finish the TODO's found within the React app. When you view the `/src` folder you will find an application for users that want to create their own addressbook (also shown in the video above). But as mentioned before there are some TODO's to be completed in order to make the application work as expected.
