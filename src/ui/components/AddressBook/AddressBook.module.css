@@ -22,3 +22,8 @@
 .item h3 {
   margin: 0 0 0.5em;
 }
+@media (min-width: 360px) {
+  h2 {
+    margin-bottom: 0.3rem;
+  }
+}

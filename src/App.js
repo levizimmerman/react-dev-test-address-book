@@ -79,85 +79,91 @@ function App() {
 
   return (
     <main>
-      <Section>
-        <h1>
-          Create your own address book!
-          <br />
-          <small>
-            Enter an address by zipcode add personal info and done! 👏
-          </small>
-        </h1>
-        {/* TODO: Create generic <Form /> component to display form rows, legend and a submit button  */}
-        <form onSubmit={handleAddressSubmit}>
-          <fieldset>
-            <legend>🏠 Find an address</legend>
-            <div className="form-row">
-              <InputText
-                name="zipCode"
-                onChange={handleZipCodeChange}
-                placeholder="Zip Code"
-                value={zipCode}
-              />
-            </div>
-            <div className="form-row">
-              <InputText
-                name="houseNumber"
-                onChange={handleHouseNumberChange}
-                value={houseNumber}
-                placeholder="House number"
-              />
-            </div>
-            <Button type="submit">Find</Button>
-          </fieldset>
-        </form>
-        {addresses.length > 0 &&
-          addresses.map((address) => {
-            return (
-              <Radio
-                name="selectedAddress"
-                id={address.id}
-                key={address.id}
-                onChange={handleSelectedAddressChange}
-              >
-                <Address address={address} />
-              </Radio>
-            );
-          })}
-        {/* TODO: Create generic <Form /> component to display form rows, legend and a submit button  */}
-        {selectedAddress && (
-          <form onSubmit={handlePersonSubmit}>
+      <div className="page-wrapper">
+        <Section>
+          <h1>
+            Create your own address book!
+            <br />
+            <small>
+              Enter an address by zipcode add personal info and done! 👏
+            </small>
+          </h1>
+          {/* TODO: Create generic <Form /> component to display form rows, legend and a submit button  */}
+          <form onSubmit={handleAddressSubmit}>
             <fieldset>
-              <legend>✏️ Add personal info to address</legend>
+              <legend>🏠 Find an address</legend>
               <div className="form-row">
                 <InputText
-                  name="firstName"
-                  placeholder="First name"
-                  onChange={handleFirstNameChange}
-                  value={firstName}
+                  name="zipCode"
+                  onChange={handleZipCodeChange}
+                  placeholder="Zip Code"
+                  value={zipCode}
                 />
               </div>
               <div className="form-row">
                 <InputText
-                  name="lastName"
-                  placeholder="Last name"
-                  onChange={handleLastNameChange}
-                  value={lastName}
+                  name="houseNumber"
+                  onChange={handleHouseNumberChange}
+                  value={houseNumber}
+                  placeholder="House number"
                 />
               </div>
-              <Button type="submit">Add to addressbook</Button>
+              <Button type="submit" variant="primary">
+                Find
+              </Button>
             </fieldset>
           </form>
-        )}
+          {addresses.length > 0 &&
+            addresses.map((address) => {
+              return (
+                <Radio
+                  name="selectedAddress"
+                  id={address.id}
+                  key={address.id}
+                  onChange={handleSelectedAddressChange}
+                >
+                  <Address address={address} />
+                </Radio>
+              );
+            })}
+          {/* TODO: Create generic <Form /> component to display form rows, legend and a submit button  */}
+          {selectedAddress && (
+            <form onSubmit={handlePersonSubmit}>
+              <fieldset>
+                <legend>✏️ Add personal info to address</legend>
+                <div className="form-row">
+                  <InputText
+                    name="firstName"
+                    placeholder="First name"
+                    onChange={handleFirstNameChange}
+                    value={firstName}
+                  />
+                </div>
+                <div className="form-row">
+                  <InputText
+                    name="lastName"
+                    placeholder="Last name"
+                    onChange={handleLastNameChange}
+                    value={lastName}
+                  />
+                </div>
+                <Button type="submit" variant="primary">
+                  Add to addressbook
+                </Button>
+              </fieldset>
+            </form>
+          )}
 
-        {/* TODO: Create an <ErrorMessage /> component for displaying an error message */}
-        {error && <div className="error">{error}</div>}
+          {/* TODO: Create an <ErrorMessage /> component for displaying an error message */}
+          {error && <div className="error">{error}</div>}
 
-        {/* TODO: Add a button to clear all form fields. Button must look different from the default primary button, see design. */}
-      </Section>
+          {/* TODO: Add a button to clear all form fields. Button must look different from the default primary button, see design. */}
+        </Section>
 
-      <Section variant="dark">
-        <AddressBook />
-      </Section>
+        <Section variant="dark">
+          <AddressBook />
+        </Section>
+      </div>
     </main>
   );
 }

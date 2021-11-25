@@ -18,6 +18,7 @@
   --color-text-light: #72787d;
   --width-input: 20rem;
   --width-content: 30rem;
+  --font-primary: "Roboto", sans-serif;
 }
 
 * {
@@ -62,4 +63,13 @@ legend {
 
 .form-row {
   margin-bottom: 0.5em;
+}
+
+@media (min-width: 360px) {
+  .page-wrapper {
+    display: block;
+  }
+  .main {
+    width: 50%;
+  }
 }
