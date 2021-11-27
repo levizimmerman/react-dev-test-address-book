@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 
 import Address from "./ui/components/Address/Address";
 import AddressBook from "./ui/components/AddressBook/AddressBook";
@@ -60,6 +61,22 @@ function App() {
      * - Bonus: Add a loading state in the UI while fetching addresses
      */
   };
+
+  function handleSubmit(response) {
+    console.log(values);
+    let zipCode = "6037RP";
+    let houseNumber = "36";
+
+    let apiUrl = `http://api.postcodedata.nl/v1/postcode/?postcode=${zipCode}&streetnumber=${houseNumber}&ref=domeinnaam.nl&type=json`;
+
+    axios.get(apiUrl).then(
+      setAddresses({
+        city: response.data.details[0].city,
+        street: response.data.details[0].street,
+        postcode: response.data.details[0].postcode,
+      })
+    );
+  }
 
   const handlePersonSubmit = (e) => {
     e.preventDefault();
