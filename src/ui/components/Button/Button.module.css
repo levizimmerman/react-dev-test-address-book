@@ -21,7 +21,7 @@
 .secondary {
   background-color: var(--color-background);
   color: var(--color-brand);
-  border: var(--color-brand);
+  border-color: var(--color-brand);
 }
 
 .button:hover {

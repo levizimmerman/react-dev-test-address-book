@@ -1,23 +1,3 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 
-const useForm = (callback) => {
-  const [values, setValues] = useState({});
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    callback();
-  };
-
-  const handleChange = (event) => {
-    event.persist();
-    setValues(event.target.value);
-  };
-
-  return {
-    handleChange,
-    handleSubmit,
-    values,
-  };
-};
-
-export default useForm;
+const { register } = useForm();

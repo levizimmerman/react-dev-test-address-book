@@ -10,6 +10,7 @@ import transformAddress from "./core/models/address";
 import useAddressBook from "./ui/hooks/useAddressBook";
 
 import "./App.css";
+import Form from "./ui/components/Form/Form";
 
 function App() {
   /**
@@ -88,29 +89,8 @@ function App() {
           </small>
         </h1>
         {/* TODO: Create generic <Form /> component to display form rows, legend and a submit button  */}
-        <form onSubmit={handleAddressSubmit}>
-          <fieldset>
-            <legend>🏠 Find an address</legend>
-            <div className="form-row">
-              <InputText
-                name="zipCode"
-                onChange={handleZipCodeChange}
-                placeholder="Zip Code"
-              />
-            </div>
-            <div className="form-row">
-              <InputText
-                name="houseNumber"
-                onChange={handleHouseNumberChange}
-                placeholder="House number"
-              />
-            </div>
-            <Button type="submit">Find</Button>
-            <Button type="reset" variant="secondary">
-              Clear all data
-            </Button>
-          </fieldset>
-        </form>
+        <Form />
+
         {addresses.length > 0 &&
           addresses.map((address) => {
             return (
