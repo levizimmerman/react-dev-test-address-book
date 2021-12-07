@@ -21,28 +21,32 @@ function Form() {
   });
 
   const onSubmit = (data) => console.log(data);
-  console.log(errors);
+
+  function handleClick(e) {
+    e.preventDefault();
+  }
 
   return (
     <div className="form">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit}>
         <fieldset>
           <legend>🏠 Find an address</legend>
-          {content.inputs.map((input, key) => {
-            return (
-              <div key={key}>
-                <div className="form-row">
-                  <InputText
-                    name={input.name}
-                    placeholder={input.label}
-                    refs={register}
-                    type={input.type}
-                  />
-                </div>
-              </div>
-            );
-          })}
-          <Button type="submit" variant="primary">
+           <div className="form-row">
+              <InputText
+                name="zipCode"
+                onChange={handleZipCodeChange}
+                placeholder="Zip Code"
+                value={zipCode}
+              />
+            </div>
+            <div className="form-row">
+              <InputText
+                name="houseNumber"
+                onChange={handleHouseNumberChange}
+                value={houseNumber}
+                placeholder="House number"
+              />
+          <Button type="submit" variant="primary" onClick={handleClick}>
             Find
           </Button>
           <Button type="reset" variant="secondary">

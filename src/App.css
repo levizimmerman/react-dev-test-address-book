@@ -65,11 +65,32 @@ legend {
   margin-bottom: 0.5em;
 }
 
-@media (min-width: 360px) {
+@media (max-width: 500px) {
+  body {
+    font-size: 1em;
+    margin-top: -4em;
+  }
+  .Section_section__3Ux2I {
+    margin-bottom: -2em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+  }
   .page-wrapper {
     display: block;
   }
   .main {
     width: 50%;
+  }
+  fieldset {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 375px) {
+  body {
+    margin-top: -4.5em;
+  }
+  h1 {
+    margin-bottom: -1.5rem;
   }
 }

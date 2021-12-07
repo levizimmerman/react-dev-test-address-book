@@ -11,9 +11,8 @@ import transformAddress from "./core/models/address";
 import useAddressBook from "./ui/hooks/useAddressBook";
 
 import "./App.css";
-import Form from "./ui/components/Form/Form";
 
-function App() {
+export default function App() {
   /**
    * Form fields states
    * TODO: Write a custom hook to set form fields in a more generic way:
@@ -50,32 +49,37 @@ function App() {
 
   const handleSelectedAddressChange = (e) => setSelectedAddress(e.target.value);
 
-  const handleAddressSubmit = async (e) => {
-    e.preventDefault();
+  /** TODO: Fetch addresses based on houseNumber and zipCode
+   * - Example URL of API: http://api.postcodedata.nl/v1/postcode/?postcode=1211EP&streetnumber=60&ref=domeinnaam.nl&type=json
+   * - Handle errors if they occur
+   * - Handle successful response by updating the `addresses` in the state using `setAddresses`
+   * - Make sure to add the houseNumber to each found address in the response using `transformAddress()` function
+   * - Bonus: Add a loading state in the UI while fetching addresses
+   */
 
-    /** TODO: Fetch addresses based on houseNumber and zipCode
-     * - Example URL of API: http://api.postcodedata.nl/v1/postcode/?postcode=1211EP&streetnumber=60&ref=domeinnaam.nl&type=json
-     * - Handle errors if they occur
-     * - Handle successful response by updating the `addresses` in the state using `setAddresses`
-     * - Make sure to add the houseNumber to each found address in the response using `transformAddress()` function
-     * - Bonus: Add a loading state in the UI while fetching addresses
-     */
-  };
+  function handleResponse(response) {
+    let error = response.data.errormessage;
+    console.log(addresses);
 
-  function handleSubmit(response) {
-    console.log(values);
-    let zipCode = "6037RP";
-    let houseNumber = "36";
-
-    let apiUrl = `http://api.postcodedata.nl/v1/postcode/?postcode=${zipCode}&streetnumber=${houseNumber}&ref=domeinnaam.nl&type=json`;
-
-    axios.get(apiUrl).then(
+    if (error) {
+      alert(response.data.errormessage);
+    } else {
       setAddresses({
         city: response.data.details[0].city,
         street: response.data.details[0].street,
         postcode: response.data.details[0].postcode,
-      })
-    );
+        houseNumber: { houseNumber },
+      });
+      <transformAddress data={addresses} />;
+    }
+  }
+
+  function handleClick(e) {
+    e.preventDefault();
+
+    let apiUrl = `http://api.postcodedata.nl/v1/postcode/?postcode=${zipCode}&streetnumber=${houseNumber}&ref=domeinnaam.nl&type=json`;
+
+    axios.get(apiUrl).then(handleResponse);
   }
 
   const handlePersonSubmit = (e) => {
@@ -106,7 +110,36 @@ function App() {
           </small>
         </h1>
         {/* TODO: Create generic <Form /> component to display form rows, legend and a submit button  */}
-        <Form />
+
+        <div className="form">
+          <form>
+            <fieldset>
+              <legend>🏠 Find an address</legend>
+              <div className="form-row">
+                <InputText
+                  name="zipCode"
+                  onChange={handleZipCodeChange}
+                  placeholder="Zip Code"
+                  value={zipCode}
+                />
+              </div>
+              <div className="form-row">
+                <InputText
+                  name="houseNumber"
+                  onChange={handleHouseNumberChange}
+                  value={houseNumber}
+                  placeholder="House number"
+                />
+                <Button type="submit" variant="primary" onClick={handleClick}>
+                  Find
+                </Button>
+                <Button type="reset" variant="secondary">
+                  Clear all data
+                </Button>
+              </div>
+            </fieldset>
+          </form>
+        </div>
 
         {addresses.length > 0 &&
           addresses.map((address) => {
@@ -161,5 +194,3 @@ function App() {
     </main>
   );
 }
-
-export default App;

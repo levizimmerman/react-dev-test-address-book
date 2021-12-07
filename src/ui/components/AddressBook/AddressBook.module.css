@@ -22,8 +22,17 @@
 .item h3 {
   margin: 0 0 0.5em;
 }
-@media (min-width: 360px) {
+@media (max-width: 500px) {
   h2 {
     margin-bottom: 0.3rem;
+  }
+  .addressBook {
+    height: 15%;
+  }
+}
+
+@media (max-width: 375px) {
+  h2 {
+    margin-bottom: -0.5rem;
   }
 }
