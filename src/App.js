@@ -20,11 +20,14 @@ function App() {
    * - Remove all individual React.useState
    * - Remove all individual onChange handlers, like handleZipCodeChange for example
    */
-  const [zipCode, setZipCode] = React.useState("");
-  const [houseNumber, setHouseNumber] = React.useState("");
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
-  const [selectedAddress, setSelectedAddress] = React.useState("");
+
+   const [fullAdress, setFullAdress] = React.useState({
+    zipCode: "",
+    houseNumber: "",
+    firstName: "",
+    lastName: "",
+    selectedAddress: "",
+  })
   /**
    * Results states
    */
@@ -38,19 +41,17 @@ function App() {
   /**
    * Text fields onChange handlers
    */
-  const handleZipCodeChange = (e) => setZipCode(e.target.value);
-
-  const handleHouseNumberChange = (e) => setHouseNumber(e.target.value);
-
-  const handleFirstNameChange = (e) => setFirstName(e.target.value);
-
-  const handleLastNameChange = (e) => setLastName(e.target.value);
-
-  const handleSelectedAddressChange = (e) => setSelectedAddress(e.target.value);
+   function handleChange(e) {
+    const value = e.target.value;
+    setFullAdress({
+      ...fullAdress,
+      [e.target.name]: value,
+    });
+  }
 
   const handleAddressSubmit = async (e) => {
     e.preventDefault();
-
+    
     /** TODO: Fetch addresses based on houseNumber and zipCode
      * - Example URL of API: http://api.postcodedata.nl/v1/postcode/?postcode=1211EP&streetnumber=60&ref=domeinnaam.nl&type=json
      * - Handle errors if they occur
@@ -59,11 +60,18 @@ function App() {
      * - Bonus: Add a loading state in the UI while fetching addresses
      */
   };
+  
 
   const handlePersonSubmit = (e) => {
     e.preventDefault();
 
-    if (!selectedAddress || !addresses.length) {
+  fetch('http://api.postcodedata.nl/v1/postcode/?postcode=1211EP&streetnumber=60&ref=domeinnaam.nl&type=json')
+           .then(response => response.json())
+           .then(({ data: details }) => {
+            setAddresses(details);
+           });
+
+    if (!fullAdress.selectedAddress || !addresses.length) {
       setError(
         "No address selected, try to select an address or find one if you haven't"
       );
@@ -71,10 +79,10 @@ function App() {
     }
 
     const foundAddress = addresses.find(
-      (address) => address.id === selectedAddress
+      (address) => address.id === fullAdress.selectedAddress
     );
 
-    addAddress({ ...foundAddress, firstName, lastName });
+    //addAddress({ ...foundAddress, firstName, lastName });
   };
 
   return (
@@ -94,16 +102,16 @@ function App() {
             <div className="form-row">
               <InputText
                 name="zipCode"
-                onChange={handleZipCodeChange}
+                onChange={handleChange}
                 placeholder="Zip Code"
-                value={zipCode}
+                value={fullAdress.zipCode}
               />
             </div>
             <div className="form-row">
               <InputText
                 name="houseNumber"
-                onChange={handleHouseNumberChange}
-                value={houseNumber}
+                onChange={handleChange}
+                value={fullAdress.houseNumber}
                 placeholder="House number"
               />
             </div>
@@ -117,14 +125,14 @@ function App() {
                 name="selectedAddress"
                 id={address.id}
                 key={address.id}
-                onChange={handleSelectedAddressChange}
+                onChange={handleChange}
               >
                 <Address address={address} />
               </Radio>
             );
           })}
         {/* TODO: Create generic <Form /> component to display form rows, legend and a submit button  */}
-        {selectedAddress && (
+        {fullAdress.selectedAddress && (
           <form onSubmit={handlePersonSubmit}>
             <fieldset>
               <legend>✏️ Add personal info to address</legend>
@@ -132,16 +140,16 @@ function App() {
                 <InputText
                   name="firstName"
                   placeholder="First name"
-                  onChange={handleFirstNameChange}
-                  value={firstName}
+                  onChange={handleChange}
+                  value={fullAdress.firstName}
                 />
               </div>
               <div className="form-row">
                 <InputText
                   name="lastName"
                   placeholder="Last name"
-                  onChange={handleLastNameChange}
-                  value={lastName}
+                  onChange={handleChange}
+                  value={fullAdress.lastName}
                 />
               </div>
               <Button type="submit">Add to addressbook</Button>
