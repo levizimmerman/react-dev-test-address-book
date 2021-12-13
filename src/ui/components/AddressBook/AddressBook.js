@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector } from 'react-redux';
 
 import Address from "../Address/Address";
 import Button from "../Button/Button";
@@ -23,9 +23,9 @@ const AddressBook = () => {
       {!loading && (
         <>
           {addresses.length === 0 && <p>No addresses found, try add one 😉</p>}
-          {addresses.map((address) => {
+          {addresses.map((address,index) => {
             return (
-              <Card key={address.id}>
+              <Card key={index}>
                 <div className={$.item}>
                   <div>
                     <h3>
@@ -35,7 +35,7 @@ const AddressBook = () => {
                   </div>
                   <div className={$.remove}>
                     <Button
-                      variant="secondary"
+                      variant="dark"
                       onClick={() => removeAddress(address.id)}
                     >
                       Remove
