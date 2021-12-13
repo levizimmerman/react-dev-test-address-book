@@ -6,8 +6,10 @@
 /* TODO: Make application responsive. It is already for the most part, but it is not optimal for smaller screens.
 * - Making the application responsive using the Mobile First principle.
 */
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Rubik:wght@300&display=swap');
 
 :root {
+  --font-primary: 'Roboto', sans-serif;
   --border-radius-default: 4px;
   --border-radius-xl: 15px;
   --color-accent: #cacfdd;
@@ -18,6 +20,8 @@
   --color-text-light: #72787d;
   --width-input: 20rem;
   --width-content: 30rem;
+  --primary: #413ef7;
+  --dark: #141925;
 }
 
 * {
@@ -62,4 +66,10 @@ legend {
 
 .form-row {
   margin-bottom: 0.5em;
+}
+
+@media screen and (max-width: 640px) {
+  .main {
+    padding: 1rem;
+  }
 }
