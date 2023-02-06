@@ -3,163 +3,174 @@ import React from "react";
 import Address from "./ui/components/Address/Address";
 import AddressBook from "./ui/components/AddressBook/AddressBook";
 import Button from "./ui/components/Button/Button";
-import InputText from "./ui/components/InputText/InputText";
 import Radio from "./ui/components/Radio/Radio";
 import Section from "./ui/components/Section/Section";
 import transformAddress from "./core/models/address";
 import useAddressBook from "./ui/hooks/useAddressBook";
 
 import "./App.css";
+import { fetchAddress } from "./core/services/databaseService";
+import ErrorMessage from "./ui/components/ErrorMessage/ErrorMessage";
+import Form from "./ui/components/Form/Form";
+import FormItem from "./ui/components/FormItem/FormItem";
+import useFormFields from "./ui/hooks/setFields";
 
 function App() {
-  /**
-   * Form fields states
-   * TODO: Write a custom hook to set form fields in a more generic way:
-   * - Hook must expose an onChange handler to be used by all <InputText /> and <Radio /> components
-   * - Hook must expose all text form field values, like so: { zipCode: '', houseNumber: '', ...etc }
-   * - Remove all individual React.useState
-   * - Remove all individual onChange handlers, like handleZipCodeChange for example
-   */
-  const [zipCode, setZipCode] = React.useState("");
-  const [houseNumber, setHouseNumber] = React.useState("");
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
-  const [selectedAddress, setSelectedAddress] = React.useState("");
-  /**
-   * Results states
-   */
-  const [error, setError] = React.useState(undefined);
-  const [addresses, setAddresses] = React.useState([]);
-  /**
-   * Redux actions
-   */
-  const { addAddress } = useAddressBook();
+   const [
+      { zipCode, houseNumber, firstName, lastName, selectedAddress },
+      handleFieldChange,
+      resetFields,
+   ] = useFormFields({
+      zipCode: "",
+      houseNumber: "",
+      firstName: "",
+      lastName: "",
+      selectedAddress: "",
+   });
+   const [loading, setLoading] = React.useState(false);
+   /**
+    * Results states
+    */
+   const [error, setError] = React.useState("");
+   const [addresses, setAddresses] = React.useState([]);
+   /**
+    * Redux actions
+    */
+   const { addAddress } = useAddressBook();
 
-  /**
-   * Text fields onChange handlers
-   */
-  const handleZipCodeChange = (e) => setZipCode(e.target.value);
+   /**
+    * Text fields onChange handlers
+    */
 
-  const handleHouseNumberChange = (e) => setHouseNumber(e.target.value);
+   const handleClearFields = (e) => {
+      setAddresses([]);
+      resetFields();
+   };
 
-  const handleFirstNameChange = (e) => setFirstName(e.target.value);
+   const handleAddressSubmit = async (e) => {
+      setLoading(true);
+      e.preventDefault();
 
-  const handleLastNameChange = (e) => setLastName(e.target.value);
+      try {
+         const addresses = await fetchAddress({
+            zipCode: e.target.zipCode.value,
+            houseNumber: e.target.houseNumber.value,
+         });
 
-  const handleSelectedAddressChange = (e) => setSelectedAddress(e.target.value);
+         if (addresses.status === "error") {
+            setError(addresses.errormessage);
+            setLoading(false);
+            return;
+         }
 
-  const handleAddressSubmit = async (e) => {
-    e.preventDefault();
+         setAddresses((prevAddresses) => [
+            ...addresses.details.map((address) => {
+               return transformAddress(address);
+            }),
+            ...prevAddresses,
+         ]);
+      } catch (error) {
+         setError(error.message);
+      }
 
-    /** TODO: Fetch addresses based on houseNumber and zipCode
-     * - Example URL of API: http://api.postcodedata.nl/v1/postcode/?postcode=1211EP&streetnumber=60&ref=domeinnaam.nl&type=json
-     * - Handle errors if they occur
-     * - Handle successful response by updating the `addresses` in the state using `setAddresses`
-     * - Make sure to add the houseNumber to each found address in the response using `transformAddress()` function
-     * - Bonus: Add a loading state in the UI while fetching addresses
-     */
-  };
+      setError();
+      e.preventDefault();
+      setLoading(false);
+   };
 
-  const handlePersonSubmit = (e) => {
-    e.preventDefault();
+   const handlePersonSubmit = (e) => {
+      e.preventDefault();
 
-    if (!selectedAddress || !addresses.length) {
-      setError(
-        "No address selected, try to select an address or find one if you haven't"
+      if (!selectedAddress || !addresses.length) {
+         setError(
+            "No address selected, try to select an address or find one if you haven't"
+         );
+         return;
+      }
+
+      const foundAddress = addresses.find(
+         (address) => address.id === selectedAddress
       );
-      return;
-    }
 
-    const foundAddress = addresses.find(
-      (address) => address.id === selectedAddress
-    );
+      addAddress({ ...foundAddress, firstName, lastName });
+   };
 
-    addAddress({ ...foundAddress, firstName, lastName });
-  };
+   return (
+      <main>
+         <Section>
+            <h1>
+               Create your own address book!
+               <br />
+               <small>
+                  Enter an address by zipcode add personal info and
+                  done! 👏
+               </small>
+            </h1>
+            <Form
+               buttonText="Find"
+               buttonLoading={loading}
+               legend="🏠 Find an address"
+               onSubmit={handleAddressSubmit}
+            >
+               <FormItem
+                  name="zipCode"
+                  placeholder="Zip Code"
+                  onChange={handleFieldChange}
+                  value={zipCode}
+               />
+               <FormItem
+                  name="houseNumber"
+                  onChange={handleFieldChange}
+                  value={houseNumber}
+                  placeholder="House number"
+               />
+            </Form>
+            {addresses.length > 0 &&
+               addresses.map((address) => {
+                  return (
+                     <Radio
+                        name="selectedAddress"
+                        id={address.id}
+                        key={address.id}
+                        onChange={handleFieldChange}
+                     >
+                        <Address address={address} />
+                     </Radio>
+                  );
+               })}
+            {selectedAddress && (
+               <Form
+                  buttonText="Add to addressbook"
+                  onSubmit={handlePersonSubmit}
+                  legend="✏️ Add personal info to address"
+               >
+                  <FormItem
+                     name="firstName"
+                     placeholder="First Name"
+                     onChange={handleFieldChange}
+                     value={firstName}
+                  />
+                  <FormItem
+                     name="lastName"
+                     placeholder="Last Name"
+                     onChange={handleFieldChange}
+                     value={lastName}
+                  />
+               </Form>
+            )}
+            <Button
+               onClick={handleClearFields}
+               variant="secondary"
+               text="Clear all fields"
+            />
 
-  return (
-    <main>
-      <Section>
-        <h1>
-          Create your own address book!
-          <br />
-          <small>
-            Enter an address by zipcode add personal info and done! 👏
-          </small>
-        </h1>
-        {/* TODO: Create generic <Form /> component to display form rows, legend and a submit button  */}
-        <form onSubmit={handleAddressSubmit}>
-          <fieldset>
-            <legend>🏠 Find an address</legend>
-            <div className="form-row">
-              <InputText
-                name="zipCode"
-                onChange={handleZipCodeChange}
-                placeholder="Zip Code"
-                value={zipCode}
-              />
-            </div>
-            <div className="form-row">
-              <InputText
-                name="houseNumber"
-                onChange={handleHouseNumberChange}
-                value={houseNumber}
-                placeholder="House number"
-              />
-            </div>
-            <Button type="submit">Find</Button>
-          </fieldset>
-        </form>
-        {addresses.length > 0 &&
-          addresses.map((address) => {
-            return (
-              <Radio
-                name="selectedAddress"
-                id={address.id}
-                key={address.id}
-                onChange={handleSelectedAddressChange}
-              >
-                <Address address={address} />
-              </Radio>
-            );
-          })}
-        {/* TODO: Create generic <Form /> component to display form rows, legend and a submit button  */}
-        {selectedAddress && (
-          <form onSubmit={handlePersonSubmit}>
-            <fieldset>
-              <legend>✏️ Add personal info to address</legend>
-              <div className="form-row">
-                <InputText
-                  name="firstName"
-                  placeholder="First name"
-                  onChange={handleFirstNameChange}
-                  value={firstName}
-                />
-              </div>
-              <div className="form-row">
-                <InputText
-                  name="lastName"
-                  placeholder="Last name"
-                  onChange={handleLastNameChange}
-                  value={lastName}
-                />
-              </div>
-              <Button type="submit">Add to addressbook</Button>
-            </fieldset>
-          </form>
-        )}
-
-        {/* TODO: Create an <ErrorMessage /> component for displaying an error message */}
-        {error && <div className="error">{error}</div>}
-
-        {/* TODO: Add a button to clear all form fields. Button must look different from the default primary button, see design. */}
-      </Section>
-
-      <Section variant="dark">
-        <AddressBook />
-      </Section>
-    </main>
-  );
+            {error && <ErrorMessage message={error} />}
+         </Section>
+         <Section variant="dark">
+            <AddressBook />
+         </Section>
+      </main>
+   );
 }
 
 export default App;
