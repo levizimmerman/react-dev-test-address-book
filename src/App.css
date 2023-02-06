@@ -2,64 +2,60 @@
 * New stuff
 */
 
-/* TODO: Add the 'Roboto' font from Google fonts and add it as a global CSS var called `--font-primary` */
 /* TODO: Make application responsive. It is already for the most part, but it is not optimal for smaller screens.
 * - Making the application responsive using the Mobile First principle.
 */
 
 :root {
-  --border-radius-default: 4px;
-  --border-radius-xl: 15px;
-  --color-accent: #cacfdd;
-  --color-background: #fff;
-  --color-border: #bbb;
-  --color-brand: #413ef7;
-  --color-text: #141925;
-  --color-text-light: #72787d;
-  --width-input: 20rem;
-  --width-content: 30rem;
+   --border-radius-default: 4px;
+   --border-radius-xl: 15px;
+   --color-accent: #cacfdd;
+   --color-background: #fff;
+   --color-border: #bbb;
+   --color-brand: #413ef7;
+   --color-text: #141925;
+   --color-text-light: #72787d;
+   --width-input: 20rem;
+   --width-content: 30rem;
+   --font-primary: "Roboto";
+}
+
+@font-face {
+   font-family: "Roboto";
+   src: url("./assets/fonts/Roboto/Roboto-Regular.ttf");
 }
 
 * {
-  box-sizing: border-box;
+   box-sizing: border-box;
 }
 
 body {
-  accent-color: var(--color-brand);
-  font-size: 18px;
-  font-family: var(--font-primary);
-  background: var(--color-accent);
+   accent-color: var(--color-brand);
+   font-size: 18px;
+   font-family: var(--font-primary);
+   background: var(--color-accent);
 }
 
 main {
-  padding: 2rem;
+   padding: 2rem;
 }
 
 small {
-  font-weight: normal;
-  font-size: 0.65em;
-  color: var(--color-text-light);
+   font-weight: normal;
+   font-size: 0.65em;
+   color: var(--color-text-light);
 }
 
 fieldset {
-  border: none;
-  border-bottom: 1px solid var(--color-accent);
-  border-top: 1px solid var(--color-accent);
-  margin: 2rem 0;
-  max-width: var(--width-input);
-  padding: 1rem 0;
-  width: 100%;
+   border: none;
+   border-bottom: 1px solid var(--color-accent);
+   border-top: 1px solid var(--color-accent);
+   margin: 2rem 0;
+   max-width: var(--width-input);
+   padding: 1rem 0;
+   width: 100%;
 }
 
 legend {
-  color: var(--color-text-light);
-}
-
-.error {
-  color: red;
-  padding: 0.5em 0;
-}
-
-.form-row {
-  margin-bottom: 0.5em;
+   color: var(--color-text-light);
 }

@@ -1,26 +1,40 @@
 import React from "react";
-import cx from "classnames";
 
 import $ from "./Button.module.css";
 
 const Button = ({
-  children,
-  onClick,
-  type = "button",
-  variant = "primary", // or 'secondary'
+   children,
+   onClick,
+   type = "button",
+   variant = "primary",
+   loading,
+   text,
 }) => {
-  return (
-    <button
-      // TODO: Add conditional classNames
-      // - Must have a condition to set the '.primary' className
-      // - Must have a condition to set the '.secondary' className
-      className={$.button}
-      type={type}
-      onClick={onClick}
-    >
-      {children}
-    </button>
-  );
+   let buttonClassName;
+
+   switch (variant) {
+      case "primary":
+         buttonClassName = $.primary;
+         break;
+      case "secondary":
+         buttonClassName = $.secondary;
+         break;
+      case "remove":
+         buttonClassName = $.remove;
+         break;
+      default:
+         break;
+   }
+
+   return (
+      <button
+         className={`${$.button} ${buttonClassName}`}
+         type={type}
+         onClick={onClick}
+      >
+         {loading ? "Loading..." : text}
+      </button>
+   );
 };
 
 export default Button;
