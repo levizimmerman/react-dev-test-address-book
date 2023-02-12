@@ -5,14 +5,27 @@ const defaultState = {
 const reducer = (state = defaultState, action) => {
   switch (action.type) {
     case "address/add":
-      /** TODO: Prevent duplicate addresses */
+      const duplicate = state.addresses.find((address) => {
+        return (
+          address.houseNumber === action.payload.houseNumber &&
+          address.street === action.payload.street
+        );
+      });
+      if (duplicate) {
+        return state;
+      }
       return { ...state, addresses: [...state.addresses, action.payload] };
+
     case "address/remove":
-      /** TODO: Write a state update which removes an address from the addresses array. */
-      return state;
+      const filteredAddresses = state.addresses.filter(
+        (address) => address.id !== action.payload
+      );
+      return { ...state, addresses: filteredAddresses };
+
     case "addresses/add": {
       return { ...state, addresses: action.payload };
     }
+
     default:
       return state;
   }
