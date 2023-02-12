@@ -1,4 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+/**
+* New stuff
+*/
+
+/* TODO: Add the 'Roboto' font from Google fonts and add it as a global CSS var called `--font-primary` */
+/* TODO: Make application responsive. It is already for the most part, but it is not optimal for smaller screens.
+* - Making the application responsive using the Mobile First principle.
+*/
 
 :root {
   --border-radius-default: 4px;
@@ -11,7 +18,6 @@
   --color-text-light: #72787d;
   --width-input: 20rem;
   --width-content: 30rem;
-  --font-primary: "Roboto", sans-serif;
 }
 
 * {
@@ -47,6 +53,11 @@ fieldset {
 
 legend {
   color: var(--color-text-light);
+}
+
+.error {
+  color: red;
+  padding: 0.5em 0;
 }
 
 .form-row {
