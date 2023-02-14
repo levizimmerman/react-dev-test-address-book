@@ -6,12 +6,12 @@
 
 .remove {
   --color-brand: var(--color-accent);
-  margin-left: auto;
 }
 
 .item {
-  align-items: center;
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 1rem;
 }
 
@@ -21,4 +21,15 @@
 
 .item h3 {
   margin: 0 0 0.5em;
+}
+
+@media (min-width: 425px) {
+  .item {
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .remove {
+    margin-left: auto;
+  }
 }
