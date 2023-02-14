@@ -20,11 +20,13 @@ function App() {
    * - Remove all individual React.useState
    * - Remove all individual onChange handlers, like handleZipCodeChange for example
    */
-  const [zipCode, setZipCode] = React.useState("");
-  const [houseNumber, setHouseNumber] = React.useState("");
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
-  const [selectedAddress, setSelectedAddress] = React.useState("");
+  // const [zipCode, setZipCode] = React.useState("");
+  // const [houseNumber, setHouseNumber] = React.useState("");
+  // const [firstName, setFirstName] = React.useState("");
+  // const [lastName, setLastName] = React.useState("");
+  // const [selectedAddress, setSelectedAddress] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+
   /**
    * Results states
    */
