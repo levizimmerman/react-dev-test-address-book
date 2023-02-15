@@ -7,7 +7,13 @@
 * - Making the application responsive using the Mobile First principle.
 */
 
+@font-face {
+  font-family: "Roboto", sans-serif;
+  src: url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap");
+}
+
 :root {
+  --font-primary: "Roboto", sans-serif;
   --border-radius-default: 4px;
   --border-radius-xl: 15px;
   --color-accent: #cacfdd;
@@ -32,7 +38,8 @@ body {
 }
 
 main {
-  padding: 2rem;
+  padding: 0.5rem;
+  gap: 1rem;
 }
 
 small {
@@ -62,4 +69,32 @@ legend {
 
 .form-row {
   margin-bottom: 0.5em;
+}
+
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-spinner {
+  margin: 0 auto;
+  border: 5px solid #f3f3f3; /* Light grey */
+  border-top: 5px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 2s linear infinite;
+}
+
+
+
+@media screen and (min-width: 640px) {
+  .main {
+    padding: 3rem;
+  }
 }
