@@ -4,15 +4,15 @@
   gap: 1rem;
 }
 
-.remove {
-  --color-brand: var(--color-accent);
-  margin-left: auto;
-}
-
 .item {
-  align-items: center;
+  align-items: start;
   display: flex;
+  flex-direction: column;
   gap: 1rem;
+}
+.remove {
+  margin-right: auto;
+  --color-brand: var(--color-accent);
 }
 
 .item address {
@@ -21,4 +21,18 @@
 
 .item h3 {
   margin: 0 0 0.5em;
+}
+
+@media only screen and (min-width: 600px) {
+  .remove {
+    --color-brand: var(--color-accent);
+    margin-left: auto;
+  }
+
+  .item {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+  }
 }
