@@ -8,6 +8,9 @@ import Radio from "./ui/components/Radio/Radio";
 import Section from "./ui/components/Section/Section";
 import transformAddress from "./core/models/address";
 import useAddressBook from "./ui/hooks/useAddressBook";
+import useForm from "./ui/hooks/useForm";
+import Form from "./ui/components/Form/Form";
+
 
 import "./App.css";
 
@@ -20,12 +23,8 @@ function App() {
    * - Remove all individual React.useState
    * - Remove all individual onChange handlers, like handleZipCodeChange for example
    */
-  // const [zipCode, setZipCode] = React.useState("");
-  // const [houseNumber, setHouseNumber] = React.useState("");
-  // const [firstName, setFirstName] = React.useState("");
-  // const [lastName, setLastName] = React.useState("");
-  // const [selectedAddress, setSelectedAddress] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
+  
+  const [values,handleChangeForm,handleClearForm] = useForm({ zipCode: "", houseNumber: "", firstName: "", lastName: "", selectedAddress: ""});
 
   /**
    * Results states
@@ -40,15 +39,6 @@ function App() {
   /**
    * Text fields onChange handlers
    */
-  const handleZipCodeChange = (e) => setZipCode(e.target.value);
-
-  const handleHouseNumberChange = (e) => setHouseNumber(e.target.value);
-
-  const handleFirstNameChange = (e) => setFirstName(e.target.value);
-
-  const handleLastNameChange = (e) => setLastName(e.target.value);
-
-  const handleSelectedAddressChange = (e) => setSelectedAddress(e.target.value);
 
   const handleAddressSubmit = async (e) => {
     e.preventDefault();
@@ -65,7 +55,7 @@ function App() {
   const handlePersonSubmit = (e) => {
     e.preventDefault();
 
-    if (!selectedAddress || !addresses.length) {
+    if (!values.selectedAddress || !addresses.length) {
       setError(
         "No address selected, try to select an address or find one if you haven't"
       );
@@ -73,10 +63,10 @@ function App() {
     }
 
     const foundAddress = addresses.find(
-      (address) => address.id === selectedAddress
+      (address) => address.id === values.selectedAddress
     );
 
-    addAddress({ ...foundAddress, firstName, lastName });
+    addAddress({ ...foundAddress, values });
   };
 
   return (
@@ -96,16 +86,16 @@ function App() {
             <div className="form-row">
               <InputText
                 name="zipCode"
-                onChange={handleZipCodeChange}
+                onChange={handleChangeForm}
                 placeholder="Zip Code"
-                value={zipCode}
+                value={values.zipCode}
               />
             </div>
             <div className="form-row">
               <InputText
                 name="houseNumber"
-                onChange={handleHouseNumberChange}
-                value={houseNumber}
+                onChange={handleChangeForm}
+                value={values.houseNumber}
                 placeholder="House number"
               />
             </div>
@@ -119,14 +109,14 @@ function App() {
                 name="selectedAddress"
                 id={address.id}
                 key={address.id}
-                onChange={handleSelectedAddressChange}
+                onChange={handleChangeForm}
               >
                 <Address address={address} />
               </Radio>
             );
           })}
         {/* TODO: Create generic <Form /> component to display form rows, legend and a submit button  */}
-        {selectedAddress && (
+        {values.selectedAddress && (
           <form onSubmit={handlePersonSubmit}>
             <fieldset>
               <legend>✏️ Add personal info to address</legend>
@@ -134,16 +124,16 @@ function App() {
                 <InputText
                   name="firstName"
                   placeholder="First name"
-                  onChange={handleFirstNameChange}
-                  value={firstName}
+                  onChange={handleChangeForm}
+                  value={values.firstName}
                 />
               </div>
               <div className="form-row">
                 <InputText
                   name="lastName"
                   placeholder="Last name"
-                  onChange={handleLastNameChange}
-                  value={lastName}
+                  onChange={handleChangeForm}
+                  value={values.lastName}
                 />
               </div>
               <Button type="submit">Add to addressbook</Button>
@@ -155,6 +145,11 @@ function App() {
         {error && <div className="error">{error}</div>}
 
         {/* TODO: Add a button to clear all form fields. Button must look different from the default primary button, see design. */}
+        <Button
+         onClick={handleClearForm} 
+         variant="secondary"
+         text="Clear Fields"
+        />
       </Section>
 
       <Section variant="dark">

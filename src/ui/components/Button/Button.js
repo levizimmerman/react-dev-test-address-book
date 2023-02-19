@@ -9,12 +9,24 @@ const Button = ({
   type = "button",
   variant = "primary", // or 'secondary'
 }) => {
+  let BtnClassName = null;
+
+  if(variant === "primary"){
+    BtnClassName = $.primary;
+  }
+  else if(variant === "secondary"){
+    BtnClassName = $.secondary;
+  }
+  else{
+    BtnClassName = null;
+  }
+  
   return (
     <button
       // TODO: Add conditional classNames
       // - Must have a condition to set the '.primary' className
       // - Must have a condition to set the '.secondary' className
-      className={$.button}
+      className={`${$.button} ${BtnClassName}`}
       type={type}
       onClick={onClick}
     >
