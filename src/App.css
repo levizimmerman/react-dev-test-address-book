@@ -8,6 +8,7 @@
 */
 
 :root {
+  --font-primary: "Roboto", sans-serif;
   --border-radius-default: 4px;
   --border-radius-xl: 15px;
   --color-accent: #cacfdd;
