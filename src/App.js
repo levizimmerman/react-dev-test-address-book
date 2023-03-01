@@ -10,6 +10,7 @@ import transformAddress from "./core/models/address";
 import useAddressBook from "./ui/hooks/useAddressBook";
 
 import "./App.css";
+import useFormFields from "./ui/hooks/useFormFields";
 
 function App() {
   /**
@@ -20,11 +21,8 @@ function App() {
    * - Remove all individual React.useState
    * - Remove all individual onChange handlers, like handleZipCodeChange for example
    */
-  const [zipCode, setZipCode] = React.useState("");
-  const [houseNumber, setHouseNumber] = React.useState("");
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
-  const [selectedAddress, setSelectedAddress] = React.useState("");
+  const initialValues = {zipCode: "", houseNumber: "", firstName: "", lastName: "", selectedAddress: ""}
+  const { values, handleChange } = useFormFields(initialValues);
   /**
    * Results states
    */
@@ -34,19 +32,6 @@ function App() {
    * Redux actions
    */
   const { addAddress } = useAddressBook();
-
-  /**
-   * Text fields onChange handlers
-   */
-  const handleZipCodeChange = (e) => setZipCode(e.target.value);
-
-  const handleHouseNumberChange = (e) => setHouseNumber(e.target.value);
-
-  const handleFirstNameChange = (e) => setFirstName(e.target.value);
-
-  const handleLastNameChange = (e) => setLastName(e.target.value);
-
-  const handleSelectedAddressChange = (e) => setSelectedAddress(e.target.value);
 
   const handleAddressSubmit = async (e) => {
     e.preventDefault();
@@ -63,7 +48,7 @@ function App() {
   const handlePersonSubmit = (e) => {
     e.preventDefault();
 
-    if (!selectedAddress || !addresses.length) {
+    if (!values.selectedAddress || !addresses.length) {
       setError(
         "No address selected, try to select an address or find one if you haven't"
       );
@@ -71,10 +56,10 @@ function App() {
     }
 
     const foundAddress = addresses.find(
-      (address) => address.id === selectedAddress
+      (address) => address.id === values.selectedAddress
     );
 
-    addAddress({ ...foundAddress, firstName, lastName });
+    addAddress({ ...foundAddress, firstName: values.firstName, lastName: values.lastName });
   };
 
   return (
@@ -94,16 +79,16 @@ function App() {
             <div className="form-row">
               <InputText
                 name="zipCode"
-                onChange={handleZipCodeChange}
+                onChange={handleChange}
                 placeholder="Zip Code"
-                value={zipCode}
+                value={values.zipCode}
               />
             </div>
             <div className="form-row">
               <InputText
                 name="houseNumber"
-                onChange={handleHouseNumberChange}
-                value={houseNumber}
+                onChange={handleChange}
+                value={values.houseNumber}
                 placeholder="House number"
               />
             </div>
@@ -117,14 +102,14 @@ function App() {
                 name="selectedAddress"
                 id={address.id}
                 key={address.id}
-                onChange={handleSelectedAddressChange}
+                onChange={handleChange}
               >
-                <Address address={address} />
+                <Address address={values.address} />
               </Radio>
             );
           })}
         {/* TODO: Create generic <Form /> component to display form rows, legend and a submit button  */}
-        {selectedAddress && (
+        {values.selectedAddress && (
           <form onSubmit={handlePersonSubmit}>
             <fieldset>
               <legend>✏️ Add personal info to address</legend>
@@ -132,16 +117,16 @@ function App() {
                 <InputText
                   name="firstName"
                   placeholder="First name"
-                  onChange={handleFirstNameChange}
-                  value={firstName}
+                  onChange={handleChange}
+                  value={values.firstName}
                 />
               </div>
               <div className="form-row">
                 <InputText
                   name="lastName"
                   placeholder="Last name"
-                  onChange={handleLastNameChange}
-                  value={lastName}
+                  onChange={handleChange}
+                  value={values.lastName}
                 />
               </div>
               <Button type="submit">Add to addressbook</Button>
