@@ -21,7 +21,13 @@ function App() {
    * - Remove all individual React.useState
    * - Remove all individual onChange handlers, like handleZipCodeChange for example
    */
-  const initialValues = {zipCode: "", houseNumber: "", firstName: "", lastName: "", selectedAddress: ""}
+  const initialValues = {
+    zipCode: "",
+    houseNumber: "",
+    firstName: "",
+    lastName: "",
+    selectedAddress: "",
+  };
   const { values, handleChange } = useFormFields(initialValues);
   /**
    * Results states
@@ -43,6 +49,20 @@ function App() {
      * - Make sure to add the houseNumber to each found address in the response using `transformAddress()` function
      * - Bonus: Add a loading state in the UI while fetching addresses
      */
+    const zipCode = e.target.elements.zipCode.value;
+    const houseNr = e.target.elements.houseNumber.value;
+
+    const res = await fetch(
+      `http://api.postcodedata.nl/v1/postcode/?postcode=${zipCode}&streetnumber=${houseNr}&ref=domeinnaam&type=json`
+    );
+    const data = await res.json();
+
+    if (data.status === "error") return setError(data.errormessage);
+    // remove any potential previous errors if current request has no errors
+    setError(undefined);
+
+    const transformedAddress = transformAddress({...data.details[0], houseNr});
+    setAddresses((prevAddresses) => [...prevAddresses, transformedAddress]);
   };
 
   const handlePersonSubmit = (e) => {
@@ -59,7 +79,11 @@ function App() {
       (address) => address.id === values.selectedAddress
     );
 
-    addAddress({ ...foundAddress, firstName: values.firstName, lastName: values.lastName });
+    addAddress({
+      ...foundAddress,
+      firstName: values.firstName,
+      lastName: values.lastName,
+    });
   };
 
   return (
@@ -104,7 +128,7 @@ function App() {
                 key={address.id}
                 onChange={handleChange}
               >
-                <Address address={values.address} />
+                <Address address={address} />
               </Radio>
             );
           })}
