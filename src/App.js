@@ -11,6 +11,7 @@ import useAddressBook from "./ui/hooks/useAddressBook";
 import useFormFields from "./ui/hooks/useFormFields";
 
 import "./App.css";
+import Button from "./ui/components/Button/Button";
 
 function App() {
   /**
@@ -28,7 +29,7 @@ function App() {
     lastName: "",
     selectedAddress: "",
   };
-  const { values, handleChange } = useFormFields(initialValues);
+  const { values, handleChange, clearFormFields } = useFormFields(initialValues);
   /**
    * Results states
    */
@@ -87,6 +88,11 @@ function App() {
     });
   };
 
+  const handleClearForm = () => {
+    clearFormFields();
+    setAddresses([]);
+  }
+  
   return (
     <main>
       <Section>
@@ -135,6 +141,7 @@ function App() {
         {error && <ErrorMessage error={error}/>}
 
         {/* TODO: Add a button to clear all form fields. Button must look different from the default primary button, see design. */}
+        <Button isPrimary={false} onClick={handleClearForm}>Clear all fields</Button>
       </Section>
 
       <Section variant="dark">

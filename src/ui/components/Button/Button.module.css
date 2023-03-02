@@ -27,11 +27,11 @@
 .primary {
   color: var(--color-background);
   background-color: var(--color-brand);
-  border-color: var(--color-border);
+  border-color: var(--color-brand);
 }
 
 .secondary {
   color: var(--color-brand);
   background-color: var(--color-background);
-  border-color: var(--color-border);
+  border-color: var(--color-brand);
 }

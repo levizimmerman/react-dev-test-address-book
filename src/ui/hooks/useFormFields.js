@@ -7,6 +7,8 @@ export default function useFormFields(initialValues) {
     const { name, value } = e.target;
     setValues((prevValues) => ({...prevValues, [name]: value }))
   }
+
+  const clearFormFields = () => setValues(initialValues)
   
-  return { values, handleChange };
+  return { values, handleChange, clearFormFields };
 }
