@@ -2,15 +2,14 @@ import React from "react";
 
 import Address from "./ui/components/Address/Address";
 import AddressBook from "./ui/components/AddressBook/AddressBook";
-import Button from "./ui/components/Button/Button";
-import InputText from "./ui/components/InputText/InputText";
 import Radio from "./ui/components/Radio/Radio";
 import Section from "./ui/components/Section/Section";
+import Form from "./ui/components/Form/Form";
 import transformAddress from "./core/models/address";
 import useAddressBook from "./ui/hooks/useAddressBook";
+import useFormFields from "./ui/hooks/useFormFields";
 
 import "./App.css";
-import useFormFields from "./ui/hooks/useFormFields";
 
 function App() {
   /**
@@ -50,10 +49,10 @@ function App() {
      * - Bonus: Add a loading state in the UI while fetching addresses
      */
     const zipCode = e.target.elements.zipCode.value;
-    const houseNr = e.target.elements.houseNumber.value;
+    const houseNumber = e.target.elements.houseNumber.value;
 
     const res = await fetch(
-      `http://api.postcodedata.nl/v1/postcode/?postcode=${zipCode}&streetnumber=${houseNr}&ref=domeinnaam&type=json`
+      `http://api.postcodedata.nl/v1/postcode/?postcode=${zipCode}&streetnumber=${houseNumber}&ref=domeinnaam&type=json`
     );
     const data = await res.json();
 
@@ -61,8 +60,9 @@ function App() {
     // remove any potential previous errors if current request has no errors
     setError(undefined);
 
-    const transformedAddress = transformAddress({...data.details[0], houseNr});
-    setAddresses((prevAddresses) => [...prevAddresses, transformedAddress]);
+    const address = transformAddress({ ...data.details[0], houseNumber });
+
+    setAddresses((prevAddresses) => [...prevAddresses, address]);
   };
 
   const handlePersonSubmit = (e) => {
@@ -97,28 +97,14 @@ function App() {
           </small>
         </h1>
         {/* TODO: Create generic <Form /> component to display form rows, legend and a submit button  */}
-        <form onSubmit={handleAddressSubmit}>
-          <fieldset>
-            <legend>🏠 Find an address</legend>
-            <div className="form-row">
-              <InputText
-                name="zipCode"
-                onChange={handleChange}
-                placeholder="Zip Code"
-                value={values.zipCode}
-              />
-            </div>
-            <div className="form-row">
-              <InputText
-                name="houseNumber"
-                onChange={handleChange}
-                value={values.houseNumber}
-                placeholder="House number"
-              />
-            </div>
-            <Button type="submit">Find</Button>
-          </fieldset>
-        </form>
+        <Form
+          initialValues={values}
+          formFieldNames={["zipCode", "houseNumber"]}
+          caption="🏠 Find an address"
+          buttonTitle={"Find"}
+          onSubmit={handleAddressSubmit}
+          onChange={handleChange}
+        />
         {addresses.length > 0 &&
           addresses.map((address) => {
             return (
@@ -134,28 +120,14 @@ function App() {
           })}
         {/* TODO: Create generic <Form /> component to display form rows, legend and a submit button  */}
         {values.selectedAddress && (
-          <form onSubmit={handlePersonSubmit}>
-            <fieldset>
-              <legend>✏️ Add personal info to address</legend>
-              <div className="form-row">
-                <InputText
-                  name="firstName"
-                  placeholder="First name"
-                  onChange={handleChange}
-                  value={values.firstName}
-                />
-              </div>
-              <div className="form-row">
-                <InputText
-                  name="lastName"
-                  placeholder="Last name"
-                  onChange={handleChange}
-                  value={values.lastName}
-                />
-              </div>
-              <Button type="submit">Add to addressbook</Button>
-            </fieldset>
-          </form>
+      <Form
+        initialValues={values}
+        formFieldNames={["firstName", "lastName"]}
+        caption="✏️ Add personal info to address"
+        buttonTitle={"Add to addressbook"}
+        onSubmit={handlePersonSubmit}
+        onChange={handleChange}
+    />
         )}
 
         {/* TODO: Create an <ErrorMessage /> component for displaying an error message */}
