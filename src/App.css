@@ -17,7 +17,7 @@
   --color-brand: #413ef7;
   --color-text: #141925;
   --color-text-light: #72787d;
-  --width-input: 20rem;
+  /* --width-input: 20rem; */
   --width-content: 30rem;
 }
 
@@ -30,6 +30,7 @@ body {
   font-size: 18px;
   font-family: var(--font-primary);
   background: var(--color-accent);
+  text-align: center;
 }
 
 main {
@@ -56,11 +57,21 @@ legend {
   color: var(--color-text-light);
 }
 
-.error {
-  color: red;
-  padding: 0.5em 0;
-}
-
 .form-row {
   margin-bottom: 0.5em;
+}
+
+@media screen and (max-width: 400px) {
+  body {
+    font-size: 15px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  body {
+    font-size: 10px;
+  }
+  fieldset {
+    margin: 0;
+  }
 }
