@@ -7,9 +7,9 @@ const Button = ({
   children,
   onClick,
   type = "button",
-  isPrimary = true
+  variant = "primary", // or 'secondary'
 }) => {
-  const classNames = `${$.button} ${isPrimary ? $.primary : $.secondary }`;
+  const classNames = `${$.button} ${variant === "primary" ? $.primary : $.secondary }`;
 
   return (
     <button

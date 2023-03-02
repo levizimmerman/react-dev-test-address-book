@@ -12,6 +12,7 @@ import useFormFields from "./ui/hooks/useFormFields";
 
 import "./App.css";
 import Button from "./ui/components/Button/Button";
+import LoadingIndicator from "./ui/components/LoadingIndicator/LoadingIndicator";
 
 function App() {
   /**
@@ -29,12 +30,14 @@ function App() {
     lastName: "",
     selectedAddress: "",
   };
-  const { values, handleChange, clearFormFields } = useFormFields(initialValues);
+  const { values, handleChange, clearFormFields } =
+    useFormFields(initialValues);
   /**
    * Results states
    */
   const [error, setError] = React.useState(undefined);
   const [addresses, setAddresses] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
   /**
    * Redux actions
    */
@@ -52,17 +55,26 @@ function App() {
      */
     const zipCode = e.target.elements.zipCode.value;
     const houseNumber = e.target.elements.houseNumber.value;
-
+    setIsLoading(true);
     const res = await fetch(
       `http://api.postcodedata.nl/v1/postcode/?postcode=${zipCode}&streetnumber=${houseNumber}&ref=domeinnaam&type=json`
     );
     const data = await res.json();
-
+    setIsLoading(false);
     if (data.status === "error") return setError(data.errormessage);
     // remove any potential previous errors if current request has no errors
     setError(undefined);
 
     const address = transformAddress({ ...data.details[0], houseNumber });
+
+    if (
+      addresses.some(
+        (entry) =>
+          entry.postcode === address.postcode &&
+          entry.houseNumber === address.houseNumber
+      )
+    )
+      return setError("House already added.");
 
     setAddresses((prevAddresses) => [...prevAddresses, address]);
   };
@@ -91,8 +103,8 @@ function App() {
   const handleClearForm = () => {
     clearFormFields();
     setAddresses([]);
-  }
-  
+  };
+
   return (
     <main>
       <Section>
@@ -127,21 +139,25 @@ function App() {
           })}
         {/* TODO: Create generic <Form /> component to display form rows, legend and a submit button  */}
         {values.selectedAddress && (
-      <Form
-        initialValues={values}
-        formFieldNames={["firstName", "lastName"]}
-        caption="✏️ Add personal info to address"
-        buttonTitle={"Add to addressbook"}
-        onSubmit={handlePersonSubmit}
-        onChange={handleChange}
-    />
+          <Form
+            initialValues={values}
+            formFieldNames={["firstName", "lastName"]}
+            caption="✏️ Add personal info to address"
+            buttonTitle={"Add to addressbook"}
+            onSubmit={handlePersonSubmit}
+            onChange={handleChange}
+          />
         )}
 
         {/* TODO: Create an <ErrorMessage /> component for displaying an error message */}
-        {error && <ErrorMessage error={error}/>}
+        {error && <ErrorMessage error={error} />}
+        
+        <LoadingIndicator isLoading={isLoading} />
 
         {/* TODO: Add a button to clear all form fields. Button must look different from the default primary button, see design. */}
-        <Button isPrimary={false} onClick={handleClearForm}>Clear all fields</Button>
+        <Button variant="secondary" onClick={handleClearForm}>
+          Clear all fields
+        </Button>
       </Section>
 
       <Section variant="dark">
